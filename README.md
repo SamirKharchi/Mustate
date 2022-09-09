@@ -54,7 +54,7 @@ Now in your UI handling code (e.g. a view model) we need to let Mustate know the
 
 We do this via the extension method `Snapshot`:
 
-```cpp
+```csharp
 personInstance.Snapshot();
 ```
 
@@ -62,7 +62,7 @@ Once that is done, we can from now on check at any time if the state, i.e. any o
 
 This is done just as easily using the extension method `HasChanged`:
 
-```cpp
+```csharp
 if (personInstance.HasChanged()) {
     // Do something
 }
