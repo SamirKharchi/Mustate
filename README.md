@@ -1,4 +1,4 @@
-# Mustate
+# Mustate ![Build & Tests](https://github.com/SamirKharchi/Mustate/actions/workflows/build.yml/badge.svg)
 Mustate (Mutable State) is a small dotnet library which purpose is to allow snapshoting the state of a model's mutable properties and detect state changes with minimum effort and high convenience.
 
 # Why
