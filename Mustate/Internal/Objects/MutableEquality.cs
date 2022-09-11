@@ -20,7 +20,7 @@ internal static class MutableEquality
     /// Holds user-defined equality comparers for mutable property types.
     /// </summary>
     private static readonly Lazy<Dictionary<Type, Func<object?, object?, bool>>> UserDefinedComparers =
-            new(new Dictionary<Type, Func<object?, object?, bool>>());
+            new(() => new Dictionary<Type, Func<object?, object?, bool>>());
 
     /// <summary>
     /// Retrieves the value of a given property via reflection.
