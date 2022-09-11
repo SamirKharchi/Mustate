@@ -1,14 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Title>Mustate</Title>
+    <Authors>SamirKharchi</Authors>
+    <Description>Mustate (Mutable State) is a small dotnet library which purpose is to allow snapshoting the state of a model's mutable properties and detect state changes with minimum effort and high convenience.</Description>
+    <Copyright>SamirKharchi</Copyright>
+    <PackageProjectUrl>https://github.com/SamirKharchi/Mustate</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/SamirKharchi/Mustate</RepositoryUrl>
+    <PackageTags>mutable, cache, state, dotnet</PackageTags>
+    <PackAsTool>True</PackAsTool>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Mapster" Version="7.3.0" />
-      <PackageReference Include="Mapster.Async" Version="2.0.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Mapster.Async" Version="2.0.0" />
+  </ItemGroup>
 
 </Project>
