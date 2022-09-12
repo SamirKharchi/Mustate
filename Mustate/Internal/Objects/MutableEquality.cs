@@ -17,12 +17,6 @@ internal static class MutableEquality
 {
     #region [ApiInvisible]
     /// <summary>
-    /// Holds user-defined equality comparers for mutable property types.
-    /// </summary>
-    private static readonly Lazy<Dictionary<Type, Func<object?, object?, bool>>> UserDefinedComparers =
-            new(() => new Dictionary<Type, Func<object?, object?, bool>>());
-
-    /// <summary>
     /// Retrieves the value of a given property via reflection.
     /// </summary>
     /// <param name="src">An instance of type T.</param>
@@ -87,10 +81,10 @@ internal static class MutableEquality
     /// Checks if mutable properties are equal.
     /// </summary>
     /// <param name="x">The first parameter for the equality check.</param>
-    /// <param name="y">The second parameter for the equality check. Should be of the same type as <see cref="x"/>.</param>
+    /// <param name="y">The second parameter for the equality check. Should be of the same type as <see cref="x"/>.</param>        
     /// <typeparam name="T">The type that has <see cref="MutableAttribute"/> properties defined.</typeparam>
     /// <returns></returns>
-    private static bool AreMutablesEqual<T>(T? x, T? y) where T : class
+    private static bool AreMutablesEqual<T>(T? x, T? y) where T : class, IMutable, new()
     {
         var mutableProperties = MutableUtils.AllMutables<T>();
         foreach (var mutableProperty in mutableProperties)
@@ -103,7 +97,7 @@ internal static class MutableEquality
                 return false;
             }
 
-            if (!wasChecked && !EqualsUserChecks(xValue, yValue, out wasChecked))
+            if (!wasChecked && !EqualsUserChecks(xValue,yValue, MutableState<T>.UserCheck(), out wasChecked))
             {
                 return false;
             }
@@ -151,56 +145,31 @@ internal static class MutableEquality
     /// </summary>
     /// <param name="x">The first parameter for the equality check.</param>
     /// <param name="y">The second parameter for the equality check. Should be of the same type as <see cref="x"/>.</param>
+    /// <param name="checkFunc"></param>
     /// <param name="wasChecked">Is true if the the user check was performed, false if the input params are not user-defined types.</param>
     /// <returns></returns>
-    private static bool EqualsUserChecks(object? x, object? y, out bool wasChecked)
+    private static bool EqualsUserChecks(object? x, object? y, Func<object?, object?, bool>? checkFunc, out bool wasChecked)
     {
-        wasChecked = false;
-        
-        if (!UserDefinedComparers.IsValueCreated)
-        {
+        if (checkFunc is null)
+        {                     
+            wasChecked = false;
             return true;
         }
 
-        foreach (var func in UserDefinedComparers.Value)
-        {
-            var equals = true;
+        wasChecked = true;
+        return checkFunc(x, y);
 
-            if (x?.GetType() == func.Key)
-            {
-                wasChecked = true;
-                equals = func.Value(x, y);
-            }
-            else if (y?.GetType() == func.Key)
-            {
-                wasChecked = true;
-                equals = func.Value(y, x);
-            }
-
-            if (!equals)
-            {
-                return false;
-            }
-        }
-        return true;
     }
-    #endregion
-
-    /// <summary>
-    /// Adds a user-defined equality check function.
-    /// </summary>
-    /// <param name="equal">The function that checks if two inputs are equal.</param>
-    public static void AddMutableEquality<TU>(Func<object?, object?, bool> equal) =>
-            UserDefinedComparers.Value.Add(typeof(TU), equal);
+    #endregion      
 
     /// <summary>
     /// Checks if all mutable properties of the given type have the same value.
     /// </summary>
     /// <param name="x">The first parameter for the equality check.</param>
-    /// <param name="y">The second parameter for the equality check. Should be of the same type as <see cref="x"/>.</param>
+    /// <param name="y">The second parameter for the equality check. Should be of the same type as <see cref="x"/>.</param>         
     /// <typeparam name="T">The model type that has <see cref="MutableAttribute"/> properties defined.</typeparam>
     /// <returns>true if mutable values do not differ, false otherwise.</returns>
-    public static bool Equals<T>(T? x, T? y) where T : class, IMutable
+    public static bool Equals<T>(T? x, T? y) where T : class, IMutable, new()
     {
         if (x is null && y is null)
         {
