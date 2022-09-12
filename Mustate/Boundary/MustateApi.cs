@@ -28,13 +28,14 @@ public static class MustateApi
     /// <param name="model">The model instance.</param>
     /// <typeparam name="T">The type which must be derived from <see cref="IMutable"/></typeparam>
     /// <returns>true if state changed, false otherwise.</returns>
-    public static bool HasChanged<T>(this T model) where T : class, IMutable, new() => MutableState<T>.HasChanged(model);
+    public static bool HasChanged<T>(this T model) where T : class, IMutable, new() =>
+        MutableState<T>.HasChanged(model);
 
     /// <summary>
-    /// Registers another mutable equality check for a specific property type.
+    /// Registers another mutable equality check.
     /// </summary>
     /// <param name="check">The equality check function.</param>
-    /// <typeparam name="T">The type of property to add the check for.</typeparam>
-    public static void RegisterMutableCheckForType<T>(this T _, Func<object?, object?, bool> check) =>
-            MutableEquality.AddMutableEquality<T>(check);
+    /// <typeparam name="T">The type to add the check for.</typeparam>
+    public static void RegisterMutableCheckForType<T>(this T _, Func<object?, object?, bool> check)
+        where T : class, IMutable, new() => MutableState<T>.AddMutableEquality(check);
 }

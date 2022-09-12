@@ -16,9 +16,14 @@ internal static class MutableState<T> where T : class, IMutable, new()
 {
     #region [ApiInvisible]
     /// <summary>
-    /// Lazy instance to capture a model state.
+    /// Instance to capture a model state.
     /// </summary>
     private static T? model;
+
+    /// <summary>
+    /// Type specific user-defined equality function.
+    /// </summary>
+    private static Func<object?, object?, bool>? equality;
     #endregion
 
     /// <summary>
@@ -29,6 +34,11 @@ internal static class MutableState<T> where T : class, IMutable, new()
         // Excludes immutable property mappings that are irrelevant for the change state check
         TypeAdapterConfig<T, T>.NewConfig().Ignore(MutableUtils.AllImmutables<T>()).Compile();
     }
+
+    /// <summary>
+    /// Type specific user-defined equality function.
+    /// </summary>
+    internal static Func<object?, object?, bool>? UserCheck() => equality;
 
     /// <summary>
     /// Retrieves if the type has been already registered via <see cref="Snapshot"/>.
@@ -49,7 +59,13 @@ internal static class MutableState<T> where T : class, IMutable, new()
         }
 
         model = modelState.Adapt<T>();
-    }
+    }      
+
+    /// <summary>
+    /// Adds a user-defined equality check function.
+    /// </summary>
+    /// <param name="equal">The function that checks if two inputs are equal.</param>
+    internal static void AddMutableEquality(Func<object?, object?, bool> equal) => equality = equal;
 
     /// <summary>
     /// Checks if the registered model has changed.

@@ -48,7 +48,7 @@ public class MutableEqualityTests
 
         if (!MustateApi.IsRegistered<UserMutable>())
         {
-            userMutable.mutable.RegisterMutableCheckForType(CustomEqualityMutablePropertyCheck);
+            userMutable.RegisterMutableCheckForType(CustomEqualityMutablePropertyCheck);
         }
     }
     
