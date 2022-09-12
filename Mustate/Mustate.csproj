@@ -11,8 +11,11 @@
     <PackageProjectUrl>https://github.com/SamirKharchi/Mustate</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/SamirKharchi/Mustate</RepositoryUrl>
-    <PackageTags>mutable, cache, state, dotnet</PackageTags>
+    <PackageTags>mutable, cache, state, dotnet, c#</PackageTags>
     <PackAsTool>True</PackAsTool>
+    <Version>1.0.1</Version>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>User-defined equality check function now registered on the IMutable type</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
